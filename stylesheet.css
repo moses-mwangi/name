@@ -59,7 +59,7 @@ ul li a:hover{
      display: flex;
      justify-content: center;
      align-items: center;
-     flex-direction: column;
+      flex-direction: column; 
 }
 .article h2{
     color: antiquewhite;
