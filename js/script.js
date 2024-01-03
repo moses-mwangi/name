@@ -121,4 +121,17 @@ const depositArr = movements.filter((mov) => mov < 0);
 console.log(deposit, depositArr);*/
 ///////////////////////// reduced /////////////////////////////////
 
-const movements = [200, -200, 340, -300, -20, 50, 400, -460];
+const movements = [200, -150, 340, 300, -20, 50, 400, -460];
+const balance = movements.reduce(function (acc, cur, i, arr) {
+  console.log(`Iteration ${i} : ${acc}`);
+  return acc + cur;
+}, 0);
+const balanceArr = movements.reduce((acc, cur, i, arr) => acc + cur, 0);
+
+console.log(balance, balanceArr);
+console.log();
+console.log();
+
+let balance2 = 0;
+for (const mov of movements) balance2 += mov;
+console.log(balance2);
