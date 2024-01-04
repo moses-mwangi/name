@@ -1,6 +1,15 @@
 "use strict";
 // const accounts = [account1, account2, account3, account4];
 // Elements
+
+// const movementDep = document.querySelector(
+//   ".movements__type movements__type--deposit"
+// );
+// const movementWith = document.querySelector(
+//   ".movements__type movements__type--withdrawal"
+// );
+// const movementValue = document.querySelector(".movementValue");
+
 const labelWelcome = document.querySelector(".welcome");
 const labelDate = document.querySelector(".date");
 const labelBalance = document.querySelector(".balance__value");
@@ -73,14 +82,22 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-const user = "Steven Thomas William";
+const calcDisplayBalance = function (movements) {
+  // labelBalance.innerHTML = "";
+  const balance = movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
+  labelBalance.textContent = balance;
+  // const html = `<p class="balance__value">${balance}€</p>`;
+  // labelBalance.insertAdjacentHTML("afterbegin", html);
+};
+calcDisplayBalance(account1.movements);
+
+/*const user = "Steven Thomas William";
 const userName = user.toLocaleLowerCase().split(" ");
 
 const ma = userName.map(function (val) {
   return val[0];
 });
-
-console.log(ma.join(""));
+console.log(ma.join(""));*/
 
 /*
 ///////////////// map //////////////////////
@@ -126,6 +143,7 @@ const balance = movements.reduce(function (acc, cur, i, arr) {
   console.log(`Iteration ${i} : ${acc}`);
   return acc + cur;
 }, 0);
+
 const balanceArr = movements.reduce((acc, cur, i, arr) => acc + cur, 0);
 
 console.log(balance, balanceArr);
@@ -135,3 +153,10 @@ console.log();
 let balance2 = 0;
 for (const mov of movements) balance2 += mov;
 console.log(balance2);
+
+/////////////// max value //////////////
+const max = movements.reduce((acc, mov) => {
+  if (acc > mov) return acc;
+  else return mov;
+}, movements[0]);
+console.log(max);
