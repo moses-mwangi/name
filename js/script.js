@@ -83,13 +83,18 @@ const displayMovements = function (movements) {
 displayMovements(account1.movements);
 
 const calcDisplayBalance = function (movements) {
-  // labelBalance.innerHTML = "";
   const balance = movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
   labelBalance.textContent = balance;
-  // const html = `<p class="balance__value">${balance}€</p>`;
-  // labelBalance.insertAdjacentHTML("afterbegin", html);
 };
 calcDisplayBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, cur) => (acc += cur));
+  labelSumIn.textContent = `${incomes}€`;
+};
+calcDisplaySummary(account1.movements);
 
 /*const user = "Steven Thomas William";
 const userName = user.toLocaleLowerCase().split(" ");
@@ -138,7 +143,7 @@ const depositArr = movements.filter((mov) => mov < 0);
 console.log(deposit, depositArr);*/
 ///////////////////////// reduced /////////////////////////////////
 
-const movements = [200, -150, 340, 300, -20, 50, 400, -460];
+/*const movements = [200, -150, 340, 300, -20, 50, 400, -460];
 const balance = movements.reduce(function (acc, cur, i, arr) {
   console.log(`Iteration ${i} : ${acc}`);
   return acc + cur;
@@ -150,13 +155,19 @@ console.log(balance, balanceArr);
 console.log();
 console.log();
 
-let balance2 = 0;
-for (const mov of movements) balance2 += mov;
-console.log(balance2);
-
 /////////////// max value //////////////
 const max = movements.reduce((acc, mov) => {
   if (acc > mov) return acc;
   else return mov;
 }, movements[0]);
-console.log(max);
+console.log(max);*/
+
+//////////////////// pipeline////////////
+/*
+const movements = [200, -150, 340, 300, -20, 50, 400, -460];
+const euroToUsd = 1.1;
+const totalDepositedUsd = movements
+  .filter((move) => move > 0)
+  .map((move) => move * euroToUsd)
+  .reduce((acc, cur) => (acc += cur), 0);
+console.log(totalDepositedUsd);*/
