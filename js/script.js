@@ -1,5 +1,5 @@
 "use strict";
-// const accounts = [account1, account2, account3, account4];
+
 // Elements
 
 // const movementDep = document.querySelector(
@@ -62,6 +62,7 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
 };
+const accounts = [account1, account2, account3, account4];
 
 const displayMovements = function (movements) {
   containerMovements.innerHTML = "";
@@ -93,6 +94,18 @@ const calcDisplaySummary = function (movements) {
     .filter((mov) => mov > 0)
     .reduce((acc, cur) => (acc += cur));
   labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, cur) => (acc += cur));
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interestRate = movements
+    .filter((mov) => mov > 0)
+    .map((deposit) => (deposit * 1.25) / 100)
+    .filter((intr, i, arr) => intr > 1)
+    .reduce((acc, int) => (acc += int));
+  labelSumInterest.textContent = `${interestRate}€`;
 };
 calcDisplaySummary(account1.movements);
 
@@ -162,7 +175,7 @@ const max = movements.reduce((acc, mov) => {
 }, movements[0]);
 console.log(max);*/
 
-//////////////////// pipeline////////////
+//////////////////// pipeline or chainig method////////////
 /*
 const movements = [200, -150, 340, 300, -20, 50, 400, -460];
 const euroToUsd = 1.1;
@@ -171,3 +184,12 @@ const totalDepositedUsd = movements
   .map((move) => move * euroToUsd)
   .reduce((acc, cur) => (acc += cur), 0);
 console.log(totalDepositedUsd);*/
+
+//////////////////////////////find method////////////////////////
+const movements = [200, -400, -150, 340, 300, -20, 50, 400, -460];
+const firstWithdrawal = movements.find((fir) => fir < 0);
+console.log(firstWithdrawal);
+
+console.log(accounts);
+const account = accounts.find((acc) => acc.owner === "moses mwangi");
+console.log(account);
