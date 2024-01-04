@@ -58,7 +58,7 @@ const account3 = {
 
 const account4 = {
   owner: "Sarah Smith",
-  movements: [430, 1000, 700, 50, 90],
+  movements: [430, 1000, 700, 50, 90, -500],
   interestRate: 1,
   pin: 4444,
 };
@@ -81,34 +81,111 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 };
-displayMovements(account1.movements);
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
+const calcDisplayBalance = function (acc) {
+  const balance = acc.movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
+  acc.balance = balance;
   labelBalance.textContent = balance;
 };
-calcDisplayBalance(account1.movements);
 
-const calcDisplaySummary = function (movements) {
-  const incomes = movements
+const calcDisplaySummary = function (acc) {
+  const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, cur) => (acc += cur));
   labelSumIn.textContent = `${incomes}€`;
 
-  const out = movements
+  const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, cur) => (acc += cur));
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
-  const interestRate = movements
+  const interestRate = acc.movements
     .filter((mov) => mov > 0)
-    .map((deposit) => (deposit * 1.25) / 100)
+    .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((intr, i, arr) => intr > 1)
     .reduce((acc, int) => (acc += int));
   labelSumInterest.textContent = `${interestRate}€`;
 };
-calcDisplaySummary(account1.movements);
 
+const creatUserName = function (accs) {
+  accs.forEach(function (acc) {
+    acc.userName = acc.owner
+      .toLowerCase()
+      .split(" ")
+      .map((name) => name[0])
+      .join("");
+    console.log(acc.userName);
+  });
+};
+creatUserName(accounts);
+
+const updateUI = function (acc) {
+  ///////// display movement////////
+  displayMovements(acc.movements);
+
+  //   /////////display balance ////////////
+  calcDisplayBalance(acc);
+
+  //   /////////display summary //////////////
+  calcDisplaySummary(acc);
+};
+
+/////////////////////event ///////////////////////
+let currentAccount;
+btnLogin.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    (acc) => acc.userName === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(" ")[0]
+    }`;
+    containerApp.style.opacity = 100;
+
+    // ///////// display movement////////
+    // displayMovements(currentAccount.movements);
+
+    // /////////display balance ////////////
+    // calcDisplayBalance(currentAccount);
+
+    // /////////display summary //////////////
+    // calcDisplaySummary(currentAccount);
+
+    updateUI(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    (acc) => acc.userName === inputTransferTo.value
+  );
+  console.log(amount, receiverAcc);
+  console.log(currentAccount);
+
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.userName !== currentAccount.userName
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+    updateUI(currentAccount);
+  }
+});
+
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+  console.log(currentAccount);
+  console.log(receiverAcc);
+  if (!currentAccount) {
+  }
+});
 /*const user = "Steven Thomas William";
 const userName = user.toLocaleLowerCase().split(" ");
 
@@ -186,6 +263,8 @@ const totalDepositedUsd = movements
 console.log(totalDepositedUsd);*/
 
 //////////////////////////////find method////////////////////////
+/*
+let cut;
 const movements = [200, -400, -150, 340, 300, -20, 50, 400, -460];
 const firstWithdrawal = movements.find((fir) => fir < 0);
 console.log(firstWithdrawal);
@@ -193,3 +272,25 @@ console.log(firstWithdrawal);
 console.log(accounts);
 const account = accounts.find((acc) => acc.owner === "moses mwangi");
 console.log(account);
+
+cut = movements.find((mv) => mv < 0);
+console.log(cut);*/
+
+const account22 = [
+  {
+    owner: "Jessica Davis",
+    movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+    interestRate: 1.5,
+    pin: 2222,
+  },
+  {
+    owner: "Steven Thomas Williams",
+    movements: [200, -200, 340, -300, -20, 50, 400, -460],
+    interestRate: 0.7,
+    pin: 3333,
+  },
+];
+
+let cure;
+cure = account22.find((acc) => acc.movements);
+console.log(cure);
