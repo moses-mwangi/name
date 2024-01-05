@@ -415,3 +415,5 @@ labelBalance.addEventListener("click", function () {
   const movementsUI = Array.from(document.querySelector(".movements__value"));
   console.log(movementsUI);
 });*/
+const bankDepositSum = accounts.map((mov) => mov.movements);
+console.log(...bankDepositSum);
