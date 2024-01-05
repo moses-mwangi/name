@@ -415,5 +415,47 @@ labelBalance.addEventListener("click", function () {
   const movementsUI = Array.from(document.querySelector(".movements__value"));
   console.log(movementsUI);
 });*/
-const bankDepositSum = accounts.map((mov) => mov.movements);
-console.log(...bankDepositSum);
+
+//(1)
+const bankDepositSum = accounts
+  .flatMap((acc) => acc.movements)
+  .filter((mov) => mov > 0)
+  .reduce((sum, cur) => (sum += cur), 0);
+console.log(bankDepositSum);
+
+//(2)
+// const numDeposit1000 = accounts
+//   .flatMap((acc) => acc.movements)
+//   .filter((mov) => mov >= 1000).length;
+
+const numDeposit1000 = accounts
+  .flatMap((acc) => acc.movements)
+  .reduce((count, cur) => (cur >= 1000 ? count + 1 : count), 0);
+console.log(numDeposit1000);
+
+//(3)
+const sums = accounts
+  .flatMap((acc) => acc.movements)
+  .reduce(
+    (sums, cur) => {
+      // cur > 0 ? (sums.deposit += cur) : (sums.withdraw += cur);
+      sums[cur > 0 ? "deposit" : "withdraw"] += cur;
+      return sums;
+    },
+    { deposit: 0, withdraw: 0 }
+  );
+console.log(sums);
+
+const capital = function (title) {
+  const exceptions = ["an", "a", "and", "but"];
+  const cap = title
+    .toLowerCase()
+    .split(" ")
+    .map((word) =>
+      exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+
+  return cap;
+};
+console.log(capital("this is a nice guy and GOOD buT HES dirty"));
