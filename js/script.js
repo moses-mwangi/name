@@ -39,34 +39,37 @@ const account1 = {
   owner: "moses mwangi",
   movements: [200, -400, 3000, -650, -130, 70, 1300, 900, -870],
   interestRate: 1.2,
-  pin: 1111,
+  pin: 11,
 };
 
 const account2 = {
   owner: "Jessica Davis",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
-  pin: 2222,
+  pin: 22,
 };
 
 const account3 = {
   owner: "Steven Thomas Williams",
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
-  pin: 3333,
+  pin: 33,
 };
 
 const account4 = {
   owner: "Sarah Smith",
   movements: [430, 1000, 700, 50, 90, -500],
   interestRate: 1,
-  pin: 4444,
+  pin: 44,
 };
 const accounts = [account1, account2, account3, account4];
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = "";
-  movements.forEach(function (mov, i) {
+
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? "deposit" : "withdrawal";
 
     const html = `
@@ -138,7 +141,7 @@ btnLogin.addEventListener("click", function (e) {
   currentAccount = accounts.find(
     (acc) => acc.userName === inputLoginUsername.value
   );
-  console.log(currentAccount);
+  // console.log(currentAccount);
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     labelWelcome.textContent = `Welcome back, ${
@@ -146,6 +149,8 @@ btnLogin.addEventListener("click", function (e) {
     }`;
     containerApp.style.opacity = 100;
 
+    inputLoginUsername.value = inputLoginPin.value = "";
+    // inputLoginPin.blur();
     // ///////// display movement////////
     // displayMovements(currentAccount.movements);
 
@@ -176,15 +181,51 @@ btnTransfer.addEventListener("click", function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
     updateUI(currentAccount);
+    inputTransferTo.value = inputTransferAmount.value = "";
   }
+});
+
+btnLoan.addEventListener("click", function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  console.log(amount);
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov > amount * 0.1)
+  ) {
+    currentAccount.movements.push(amount);
+  }
+  updateUI(currentAccount);
+  inputLoanAmount.value = "";
 });
 
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
-  console.log(currentAccount);
-  console.log(receiverAcc);
-  if (!currentAccount) {
+
+  if (
+    // inputCloseUsername.value === currentAccount.username ||
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      (acc) => acc.username === currentAccount.username
+    );
+    console.log(index);
+    // .indexOf(23)
+    accounts.splice(index, 1);
+    // // Delete account
+    console.log(accounts);
+
+    // // Hide UI
+    containerApp.style.opacity = 0;
   }
+  inputCloseUsername = inputClosePin = "";
+});
+
+let sorted = false;
+btnSort.addEventListener("click", function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 /*const user = "Steven Thomas William";
 const userName = user.toLocaleLowerCase().split(" ");
@@ -276,6 +317,8 @@ console.log(account);
 cut = movements.find((mv) => mv < 0);
 console.log(cut);*/
 
+////////////////// findmethod prac ////////////////
+/*
 const account22 = [
   {
     owner: "Jessica Davis",
@@ -292,5 +335,83 @@ const account22 = [
 ];
 
 let cure;
-cure = account22.find((acc) => acc.movements);
+cure = account22.find((acc) => acc.pin === 3333);
 console.log(cure);
+
+let pin = 2222;
+
+const callBack = (element) => element > pin === 3333;
+const index = account22.findIndex(callBack);
+console.log(index);*/
+
+/*const movements = [200, -400, -150, 340, 300, -20, 50, 400, -460];
+const some = movements.some((acc) => acc > 0);
+console.log(some);
+
+const som = movements.every((acc) => acc > 0);
+console.log(som);
+
+const allMovement = accounts
+  .map((acc) => acc.movements)
+  .flat()
+  .reduce((acc, cur) => (acc += cur), 0);
+
+console.log(allMovement2);
+
+////////////flatmap////////////
+
+const allMovement2 = accounts
+  .flatMap((acc) => acc.movements)
+  .reduce((acc, cur) => (acc += cur), 0);
+
+console.log(allMovement2);
+*/
+//const movements = [200, 20, -400, -150, 340, 300, -20, 50, 400, -460];
+
+///////////////// ascending order///////////////
+/////return < 0 a,b keep order
+/////return > 0 b,a switch order
+/*movements.sort((a, b) => {
+  if (a > b) {
+    return 1;
+  }
+  if (b > a) {
+    return -1;
+  }
+});
+
+movements.sort((a, b) => a - b);
+console.log(movements);
+*/
+/////////////// descending order///////////////
+/////return > 0 a,b keep order
+/////return < 0 b,a switch order
+/*movements.sort((a, b) => {
+  if (a > b) {
+    return -1;
+  }
+  if ( a < b) {
+    return 1;
+  }
+});
+
+movements.sort((a, b) => b - a);
+
+console.log(movements);
+*/
+
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const arr2 = new Array(7);
+arr2.fill(4, 3, 6);
+arr.fill(2, 4, 6);
+console.log(arr, arr2);
+
+const arr3 = Array.from({ length: 8 }, () => 1);
+const arr4 = Array.from({ length: 8 }, (_, i) => i + 1);
+
+console.log(arr3, arr4);
+
+labelBalance.addEventListener("click", function () {
+  const movementsUI = Array.from(document.querySelector(".movements__value"));
+  console.log(movementsUI);
+});
