@@ -399,7 +399,7 @@ movements.sort((a, b) => b - a);
 
 console.log(movements);
 */
-
+/*
 const arr = [1, 2, 3, 4, 5, 6, 7, 8];
 const arr2 = new Array(7);
 arr2.fill(4, 3, 6);
@@ -414,4 +414,4 @@ console.log(arr3, arr4);
 labelBalance.addEventListener("click", function () {
   const movementsUI = Array.from(document.querySelector(".movements__value"));
   console.log(movementsUI);
-});
+});*/
