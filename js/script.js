@@ -110,7 +110,7 @@ const displayMovements = function (movements, sort = false) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
 
@@ -121,26 +121,26 @@ const displayMovements = function (movements, sort = false) {
 const calcDisplayBalance = function (acc) {
   const balance = acc.movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
   acc.balance = balance;
-  labelBalance.textContent = balance;
+  labelBalance.textContent = `${acc.balance.toFixed(2) + "€"}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, cur) => (acc += cur));
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, cur) => (acc += cur));
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
   const interestRate = acc.movements
     .filter((mov) => mov > 0)
     .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((intr, i, arr) => intr > 1)
     .reduce((acc, int) => (acc += int));
-  labelSumInterest.textContent = `${interestRate}€`;
+  labelSumInterest.textContent = `${interestRate.toFixed(2)}€`;
 };
 
 const creatUserName = function (accs) {
@@ -220,7 +220,7 @@ btnTransfer.addEventListener("click", function (e) {
 
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Number(inputLoanAmount.value);
+  const amount = Math.round(Number(inputLoanAmount.value));
   console.log(amount);
   if (
     amount > 0 &&
@@ -494,15 +494,65 @@ const capital = function (title) {
 };
 console.log(capital("this is a nice guy and GOOD buT HES dirty"));
 */
+
+/*
+console.log(Number.parseInt(10.5));
+console.log(Number.parseFloat(10.5));
 console.log(Number.parseInt("30px", 10));
 console.log(Number.parseInt("3.55px"));
 console.log(Number.parseFloat("30px"));
 console.log(Number.parseFloat("3.55px"));
-const movements = [200, 20, -400, -150, 340, 300, -20, 50, 400, -460];
-const v = movements.reduce((acc, cur) => (cur > 0 ? (acc += cur) : acc), 0);
-const z = movements.sort((a, b) => a - b);
-const d = movements.reduce((count, cur, i) => (count += 1), 0);
-console.log(v);
-// console.log(w);
-console.log(z);
-console.log(d);
+
+console.log("---------------------------");
+console.log(Number.isNaN(10));
+console.log(Number.isNaN("3.55px"));
+console.log(Number.isNaN(+"30px"));
+console.log(Number.isNaN(3.55));
+
+console.log("---------------------------");
+console.log(Number.isFinite(10));
+console.log(Number.isFinite("3.55px"));
+console.log(Number.isFinite(+"30px"));
+console.log(Number.isFinite(3.55));
+
+console.log(Math.sqrt(25));
+console.log(25 ** (1 / 2));
+
+console.log(Math.max(25, 40, 50, 60, 70, 80));
+console.log(Math.max(12, 25, 47, 19, 20));
+
+console.log(Math.PI * Number.parseFloat("10") ** 2);
+console.log(Math.trunc(Math.random() * 6) + 1);
+
+const randomIntegers = (min, max) =>
+  Math.trunc(Math.random() * (max - min) + 1) + min;
+console.log(randomIntegers(10, 20));
+
+console.log("---------------------------");
+console.log(Math.trunc(23.3));
+console.log(Math.trunc(23.6));
+
+console.log("---------------------------");
+console.log(Math.round(23));
+console.log(Math.round(23.6));
+
+console.log("---------------------------");
+console.log(Math.ceil(23.3));
+console.log(Math.ceil(23.6));
+
+console.log("---------------------------");
+console.log(Math.floor(23.3));
+console.log(Math.floor(23.6));
+
+console.log("---------------------------");
+console.log(+(23.3).toFixed(2));
+console.log(+(23.6246).toFixed(3));*/
+///////////////// reminder operater //////////////////
+
+console.log(5 % 2);
+const rem = (n) => n % 2 === 0;
+rem();
+console.log(rem(8));
+console.log(rem(9));
+console.log(rem(10));
+console.log(rem(11));
