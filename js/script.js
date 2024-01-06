@@ -548,7 +548,7 @@ console.log("---------------------------");
 console.log(+(23.3).toFixed(2));
 console.log(+(23.6246).toFixed(3));*/
 ///////////////// reminder operater //////////////////
-
+/*
 console.log(5 % 2);
 const rem = (n) => n % 2 === 0;
 rem();
@@ -556,3 +556,38 @@ console.log(rem(8));
 console.log(rem(9));
 console.log(rem(10));
 console.log(rem(11));
+
+labelBalance.addEventListener("click", function () {
+  [...document.querySelectorAll(".movements__row")].forEach(function (row, i) {
+    if (i % 2 === 0) row.style.backgroundColor = "red";
+  });
+});*/
+
+console.log(2 ** 53 - 1);
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(66666_6666666666666666666666666666666666n);
+console.log(BigInt(98882529999));
+
+///////////////////creating date///////////////////////
+const date = new Date();
+console.log(date);
+
+console.log(new Date("December, 25, 2023"));
+console.log(new Date(2023, 11, 25, 6, 20, 40));
+
+console.log(new Date(0));
+console.log(new Date(3 * 24 * 60 * 60 * 1000));
+
+console.log("------------------------------------------------------");
+const future = new Date(2023, 11, 6, 30, 46);
+console.log(future);
+console.log(future.getFullYear());
+console.log(future.getMonth());
+console.log(future.getDate());
+console.log(future.getHours());
+console.log(future.getDay());
+console.log(future.toISOString());
+console.log(future.getTime());
+console.log(new Date(1701920760000));
+console.log(Date.now());
+console.log(new Date(1704551722321));
