@@ -104,11 +104,11 @@ const formatMovementDate = function (date, locale) {
   else if (dayPass === 1) return `Yesterday`;
   else if (dayPass <= 7) return `${dayPass} days ago`;
   else {
-    // const year = date.getFullYear();
-    // const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    // const dat = `${date.getDate()}`.padStart(2, 0);
-
-    return new Intl.DateTimeFormat(locale).format(date);
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const dat = `${date.getDate()}`.padStart(2, 0);
+    return `${dat}/${month}/${year}`;
+    // new Intl.DateTimeFormat(locale).format(date);
   }
 };
 
@@ -137,7 +137,7 @@ const displayMovements = function (acc, sort = false) {
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 };
-
+/////////////////////////////////////////////////////////////////////////////////////
 const calcDisplayBalance = function (acc) {
   const balance = acc.movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
   acc.balance = balance;
