@@ -17,7 +17,7 @@ const account1 = {
     "2020-07-12T10:51:36.790Z",
   ],
   currency: "EUR",
-  locale: "af", // de-DE
+  locale: "ar", // de-DE
 };
 
 const account2 = {
@@ -124,13 +124,18 @@ const displayMovements = function (acc, sort = false) {
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDate(date, acc.locale);
 
+    // const n = { style: "currency", currency: "USD" };
+    const formatedMove = new Intl.NumberFormat(acc.locale, {
+      style: "currency",
+      currency: acc.currency,
+    }).format(mov);
     const html = `
        <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
      <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${formatedMove}</div>
       </div>
     `;
 
@@ -141,7 +146,11 @@ const displayMovements = function (acc, sort = false) {
 const calcDisplayBalance = function (acc) {
   const balance = acc.movements.reduce((acc, mov, i, arr) => (acc += mov), 0);
   acc.balance = balance;
-  labelBalance.textContent = `${acc.balance.toFixed(2) + "€"}`;
+  // labelBalance.textContent = `${acc.balance.toFixed(2) + "€"}`;
+  labelBalance.textContent = new Intl.NumberFormat(acc.locale, {
+    style: "currency",
+    currency: acc.currency,
+  }).format(balance);
 };
 
 const calcDisplaySummary = function (acc) {
@@ -188,8 +197,29 @@ const updateUI = function (acc) {
 
 /////////////////////event ///////////////////////
 
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${sec}`;
+
+    if (time === 0) {
+      clearInterval(timer);
+
+      labelWelcome.textContent = "Log in to get Started";
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+
+  let time = 120;
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
 ////////////////////////////////////////////////////////////////////////////
-let currentAccount;
+let currentAccount, timer;
 
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
@@ -231,6 +261,9 @@ btnLogin.addEventListener("click", function (e) {
 
     // /////////display summary //////////////
     // calcDisplaySummary(currentAccount);
+    startLogOutTimer();
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
 
     updateUI(currentAccount);
   }
@@ -257,6 +290,9 @@ btnTransfer.addEventListener("click", function (e) {
     updateUI(currentAccount);
 
     inputTransferTo.value = inputTransferAmount.value = "";
+
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 ///////////////////////////////////////////////////////////////////////////
@@ -268,10 +304,16 @@ btnLoan.addEventListener("click", function (e) {
     amount > 0 &&
     currentAccount.movements.some((mov) => mov > amount * 0.1)
   ) {
-    currentAccount.movements.push(amount);
-    currentAccount.movementsDates.push(new Date().toISOString());
+    setTimeout(function () {
+      currentAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      updateUI(currentAccount);
+
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }, 3000);
   }
-  updateUI(currentAccount);
+
   inputLoanAmount.value = "";
 });
 ////////////////////////////////////////////////////////////////////////////////
@@ -606,15 +648,16 @@ labelBalance.addEventListener("click", function () {
   });
 });*/
 
-console.log(2 ** 53 - 1);
+/*console.log(2 ** 53 - 1);
 console.log(Number.MAX_SAFE_INTEGER);
 console.log(66666_6666666666666666666666666666666666n);
-console.log(BigInt(98882529999));
+console.log(BigInt(98882529999));*/
 
 ///////////////////creating date///////////////////////
 /*
 const date = new Date();
 console.log(date);
+
 
 console.log(new Date("December, 25, 2023"));
 console.log(new Date(2023, 11, 25, 6, 20, 40));
@@ -638,12 +681,82 @@ console.log(new Date(1704551722321));
 console.log(new Date());
 
 const n = new Date();
-console.log(n.toISOString());
-*/
+console.log(n.toISOString()); */
+// const n = new Date();
+// console.log(n.getTime());
 
+/*
 const future = new Date(2023, 11, 6, 30, 46);
 console.log(+future);
 
 const calDayPassed = (day1, day2) => (day2 - day1) / (1000 * 60 * 60 * 24);
 const day = calDayPassed(new Date(2023, 11, 6), new Date(2023, 11, 16));
 console.log(day);
+
+const option = {
+  style: "unit",
+  unit: "celsius",
+  currency: "EUR",
+};
+const num = 3600490.54;
+console.log(new Intl.NumberFormat("af", option).format(num));
+console.log(new Intl.NumberFormat("en-us", option).format(num));
+console.log(new Intl.NumberFormat("de-DE", option).format(num));
+*/
+/*
+const now = new Date();
+console.log(now.toISOString());
+const time = new Intl.DateTimeFormat("en-us").format(now);
+console.log(time);
+
+const ingredient = ["olive", "spinach"];
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2}`),
+  4000,
+  ...ingredient
+);
+if (ingredient.includes("spinach")) {
+  clearTimeout(pizzaTimer);
+}
+
+console.log(".....waiting..........");
+
+setInterval(function () {
+  const now = new Date();
+  // console.log(now);
+}, 3000);*/
+
+// const tre = [1, -2, -4, 6, 7, -9, 5, -5, 4, 3, 6, -7, 8, 9, 8];
+// const t = tre.reduce((a, b) => a + 1);
+// console.log(t);
+
+const person1 = {
+  owner: "kamaa",
+  fullName: function () {
+    return this.firstName + " " + this.lastName;
+  },
+};
+
+const person2 = {
+  firstName: "John",
+  lastName: "Doe",
+};
+
+// Return "John Doe":
+const f = person1.fullName.call(person2);
+
+console.log(f, person1, person2);
+
+const add = (function () {
+  let counter = 0;
+  return function () {
+    counter += 1;
+    return counter;
+  };
+})();
+
+console.log(add());
+console.log(add());
+console.log(add());
+add();
+add();
