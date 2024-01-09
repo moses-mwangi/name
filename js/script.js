@@ -729,7 +729,7 @@ setInterval(function () {
 // const tre = [1, -2, -4, 6, 7, -9, 5, -5, 4, 3, 6, -7, 8, 9, 8];
 // const t = tre.reduce((a, b) => a + 1);
 // console.log(t);
-
+/*
 const person1 = {
   owner: "kamaa",
   fullName: function () {
@@ -760,3 +760,4 @@ console.log(add());
 console.log(add());
 add();
 add();
+*/
